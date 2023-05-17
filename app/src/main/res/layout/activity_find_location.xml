@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".FindLocation"
+    android:background="@drawable/ele8">
+
+    <TextView
+        android:id="@+id/findLocation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:text="Current Location"
+        android:textColor="@color/white"
+        android:textSize="44sp"
+        android:textStyle="bold" />
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:text="Get Location"
+        android:layout_marginBottom="550dp"
+        android:layout_marginStart="90dp"
+        android:textSize="22sp"
+        android:id="@+id/btnLocation"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Address "
+        android:textColor="@color/white"
+        android:layout_below="@id/findLocation"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="80dp"
+        android:id="@+id/address"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Lagitude "
+        android:textColor="@color/white"
+        android:layout_below="@id/address"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="20dp"
+        android:id="@+id/latitude"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Longitude "
+        android:textColor="@color/white"
+        android:layout_below="@id/latitude"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="20dp"
+        android:id="@+id/longitude"/>
+
+</RelativeLayout>
