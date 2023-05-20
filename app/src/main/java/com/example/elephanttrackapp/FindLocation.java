@@ -18,14 +18,21 @@ import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.io.IOException;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -41,11 +48,13 @@ public class FindLocation extends AppCompatActivity implements LocationListener 
     final static String[] PERMISSIONS = {Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION};
     final static int PERMISSION_ALL = 1;
 
-
+    //fire base
+    EditText eleID;
+    TextView F_latitude,F_longitude,F_Address,F_date;
 
     FusedLocationProviderClient fusedLocationProviderClient;
     TextView longitude,latitude,address;
-    Button getLocation;
+    Button upload;
     private final static int REQUEST_CODE=100;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,14 +77,23 @@ public class FindLocation extends AppCompatActivity implements LocationListener 
         longitude=findViewById(R.id.longitude);
         latitude=findViewById(R.id.latitude);
         address=findViewById(R.id.address);
-        getLocation=findViewById(R.id.btnLocation);
+        upload=findViewById(R.id.btnUpload);
+        eleID=findViewById(R.id.editTextElephantID);
+
+
+        F_date=findViewById(R.id.DAT);
+
+        Date date= Calendar.getInstance().getTime();
+        F_date.setText(date.toString());
 
         fusedLocationProviderClient= LocationServices.getFusedLocationProviderClient(this);
-        //Need To upload these data to fire base
-        getLocation.setOnClickListener(new View.OnClickListener() {
+
+
+        upload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getLastLocation();
+
+                uploadData();
             }
         });
     }
@@ -90,9 +108,13 @@ public class FindLocation extends AppCompatActivity implements LocationListener 
                                 List<Address> addresses= null;
                                 try {
                                     addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
-                                    latitude.setText("Latitude : "+addresses.get(0).getLatitude());
-                                    longitude.setText("Longitude: "+addresses.get(0).getLongitude());
-                                    address.setText("Address : "+addresses.get(0).getAddressLine(0));
+                                    latitude.setText(""+addresses.get(0).getLatitude());
+                                    longitude.setText(""+addresses.get(0).getLongitude());
+                                    address.setText(""+addresses.get(0).getAddressLine(0));
+                                    F_latitude=latitude;
+                                    F_longitude=longitude;
+                                    F_Address=address;
+                                    //uploadData();
                                 } catch (IOException e) {
                                     e.printStackTrace();
                                 }
@@ -145,6 +167,34 @@ public class FindLocation extends AppCompatActivity implements LocationListener 
                         GPS_TIME_INTERVAL, GPS_DISTANCE, this);
             }
         }
+    }
+
+
+    //UPLOAD DATA
+    public void uploadData(){
+        String EleID=eleID.getText().toString();
+        String latitude=F_latitude.getText().toString();
+        String longitude=F_longitude.getText().toString();
+        String address=F_Address.getText().toString();
+        String DAT=F_date.getText().toString();
+
+        LocationData ld=new LocationData(EleID,longitude,latitude,address,DAT);
+
+        FirebaseDatabase.getInstance().getReference("Location Details").child(EleID+DAT)
+                .setValue(ld).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if(task.isSuccessful()){
+                            Toast.makeText(FindLocation.this, "Added Successfully", Toast.LENGTH_SHORT).show();
+                            finish();
+                        }
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(FindLocation.this, e.getMessage().toString(), Toast.LENGTH_SHORT).show();
+                    }
+                });
     }
 
 }
