@@ -17,8 +17,10 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,15 +30,27 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
 public class FindLocation extends AppCompatActivity implements LocationListener {
+
+    Spinner spinner;
+    ArrayList<String> list;
+    DatabaseReference spinnerRef;
+    ArrayAdapter<String> adapter;
+    ValueEventListener listener;
+
 
     LocationManager locationManager;
     private static final int GPS_TIME_INTERVAL = 1000 ; // get gps location
@@ -73,12 +87,18 @@ public class FindLocation extends AppCompatActivity implements LocationListener 
         }, START_HANDLER_DELAY);
 
         setContentView(R.layout.activity_find_location);
+        spinner=findViewById(R.id.spinner);
+        spinnerRef=FirebaseDatabase.getInstance().getReference("Elephants Details");
+        list=new ArrayList<String>();
+        adapter=new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item,list);
+        spinner.setAdapter(adapter);
+
+        fetchData();
 
         longitude=findViewById(R.id.longitude);
         latitude=findViewById(R.id.latitude);
         address=findViewById(R.id.address);
         upload=findViewById(R.id.btnUpload);
-        eleID=findViewById(R.id.editTextElephantID);
 
 
         F_date=findViewById(R.id.DAT);
@@ -172,7 +192,7 @@ public class FindLocation extends AppCompatActivity implements LocationListener 
 
     //UPLOAD DATA
     public void uploadData(){
-        String EleID=eleID.getText().toString();
+        String EleID=spinner.getSelectedItem().toString();
         String latitude=F_latitude.getText().toString();
         String longitude=F_longitude.getText().toString();
         String address=F_Address.getText().toString();
@@ -180,7 +200,7 @@ public class FindLocation extends AppCompatActivity implements LocationListener 
 
         LocationData ld=new LocationData(EleID,longitude,latitude,address,DAT);
 
-        FirebaseDatabase.getInstance().getReference("Location Details").child(EleID+DAT)
+        FirebaseDatabase.getInstance().getReference(EleID).child(DAT)
                 .setValue(ld).addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
@@ -195,6 +215,22 @@ public class FindLocation extends AppCompatActivity implements LocationListener 
                         Toast.makeText(FindLocation.this, e.getMessage().toString(), Toast.LENGTH_SHORT).show();
                     }
                 });
+    }
+
+    public void fetchData(){
+        listener=spinnerRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for(DataSnapshot mydata: snapshot.getChildren())
+                    list.add(mydata.getValue().toString());
+                adapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
 
 }

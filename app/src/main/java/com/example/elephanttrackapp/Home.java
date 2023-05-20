@@ -85,7 +85,7 @@ public class Home extends AppCompatActivity {
         summary.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(Home.this,LocationSummary.class));
+                startActivity(new Intent(Home.this,LocationDetails.class));
             }
         });
 

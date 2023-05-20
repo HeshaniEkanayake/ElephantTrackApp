@@ -22,7 +22,6 @@ public class LocationData {
     public LocationData(){
 
     }
-
     public String getEleId() {
         return EleId;
     }
