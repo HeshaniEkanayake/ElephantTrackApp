@@ -12,29 +12,52 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
-        android:text="Current Location"
+        android:text="Set Location To Elephant"
         android:textColor="@color/white"
         android:textSize="44sp"
         android:textStyle="bold" />
+
     <Button
+        android:id="@+id/btnLocation"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="150dp"
         android:layout_alignParentBottom="true"
-        android:text="Get Location"
-        android:layout_marginBottom="550dp"
-        android:layout_marginStart="90dp"
-        android:textSize="22sp"
-        android:id="@+id/btnLocation"/>
+        android:layout_marginStart="110dp"
+        android:text="Set Location"
+        android:textSize="22sp" />
+
+    <EditText
+        android:id="@+id/editTextElephantID"
+        android:layout_marginTop="60dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="Elephant ID"
+        android:layout_marginStart="10dp"
+        android:layout_below="@+id/findLocation"
+
+        android:inputType="textPersonName"
+        android:textColor="@color/white"
+        android:textColorHighlight="@color/black"
+        android:textColorHint="@color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.483"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.19" />
+
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Address "
         android:textColor="@color/white"
-        android:layout_below="@id/findLocation"
+        android:layout_below="@id/editTextElephantID"
         android:textSize="22sp"
         android:textStyle="bold"
         android:layout_marginStart="10dp"
-        android:layout_marginTop="80dp"
+        android:layout_marginTop="20dp"
         android:id="@+id/address"/>
     <TextView
         android:layout_width="match_parent"
