@@ -21,6 +21,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextClock;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -37,6 +38,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.io.IOException;
+import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -55,7 +57,7 @@ public class FindLocation extends AppCompatActivity implements LocationListener 
     LocationManager locationManager;
     private static final int GPS_TIME_INTERVAL = 1000 ; // get gps location
     private static final int GPS_DISTANCE = 1000;
-    private static final int HANDLER_DELAY = 1000*60*5 ; //display the result
+    private static final int HANDLER_DELAY = 1000*60*10; //display the result
     private static final int START_HANDLER_DELAY = 0;
 
 
@@ -68,6 +70,7 @@ public class FindLocation extends AppCompatActivity implements LocationListener 
 
     FusedLocationProviderClient fusedLocationProviderClient;
     TextView longitude,latitude,address;
+    TextClock clock;
     Button upload;
     private final static int REQUEST_CODE=100;
     @Override
@@ -99,12 +102,13 @@ public class FindLocation extends AppCompatActivity implements LocationListener 
         latitude=findViewById(R.id.latitude);
         address=findViewById(R.id.address);
         upload=findViewById(R.id.btnUpload);
-
+        clock=findViewById(R.id.clock);
 
         F_date=findViewById(R.id.DAT);
 
-        Date date= Calendar.getInstance().getTime();
-        F_date.setText(date.toString());
+        Calendar calendar=Calendar.getInstance();
+        String CurrentDate= DateFormat.getDateInstance(android.icu.text.DateFormat.FULL).format(calendar.getTime());
+        F_date.setText(CurrentDate);
 
         fusedLocationProviderClient= LocationServices.getFusedLocationProviderClient(this);
 
@@ -112,8 +116,8 @@ public class FindLocation extends AppCompatActivity implements LocationListener 
         upload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 uploadData();
+                Toast.makeText(FindLocation.this, "Added Successfully", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -134,7 +138,7 @@ public class FindLocation extends AppCompatActivity implements LocationListener 
                                     F_latitude=latitude;
                                     F_longitude=longitude;
                                     F_Address=address;
-                                    //uploadData();
+                                    uploadData();
                                 } catch (IOException e) {
                                     e.printStackTrace();
                                 }
@@ -196,7 +200,8 @@ public class FindLocation extends AppCompatActivity implements LocationListener 
         String latitude=F_latitude.getText().toString();
         String longitude=F_longitude.getText().toString();
         String address=F_Address.getText().toString();
-        String DAT=F_date.getText().toString();
+
+        String DAT=clock.getText().toString()+" "+F_date.getText().toString();
 
         LocationData ld=new LocationData(EleID,longitude,latitude,address,DAT);
 
@@ -205,8 +210,7 @@ public class FindLocation extends AppCompatActivity implements LocationListener 
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         if(task.isSuccessful()){
-                            Toast.makeText(FindLocation.this, "Added Successfully", Toast.LENGTH_SHORT).show();
-                            finish();
+
                         }
                     }
                 }).addOnFailureListener(new OnFailureListener() {
@@ -222,7 +226,7 @@ public class FindLocation extends AppCompatActivity implements LocationListener 
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for(DataSnapshot mydata: snapshot.getChildren())
-                    list.add(mydata.getValue().toString());
+                    list.add(mydata.child("eleID").getValue().toString());
                 adapter.notifyDataSetChanged();
             }
 

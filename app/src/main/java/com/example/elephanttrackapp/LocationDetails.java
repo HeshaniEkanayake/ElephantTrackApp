@@ -81,7 +81,7 @@ public class LocationDetails extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for(DataSnapshot mydata: snapshot.getChildren())
-                    list.add(mydata.getValue().toString());
+                    list.add(mydata.child("eleID").getValue().toString());
                 adapter.notifyDataSetChanged();
             }
 

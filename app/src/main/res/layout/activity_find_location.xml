@@ -21,7 +21,7 @@
         android:id="@+id/btnUpload"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/longitude"
+        android:layout_below="@id/DAT"
         android:layout_marginTop="50dp"
         android:text="Upload Data"
         android:layout_centerHorizontal="true"
@@ -30,7 +30,7 @@
     <TextView
         android:layout_width="120dp"
         android:layout_height="wrap_content"
-        android:text="Select One : "
+        android:text="Elephant Id:"
         android:textColor="@color/white"
         android:layout_below="@id/findLocation"
         android:textSize="22sp"
@@ -41,7 +41,7 @@
     <TextView
         android:layout_width="120dp"
         android:layout_height="wrap_content"
-        android:text="Address : "
+        android:text="Address     : "
         android:textColor="@color/white"
         android:layout_below="@id/Select"
         android:textSize="22sp"
@@ -68,7 +68,7 @@
     <TextView
         android:layout_width="120dp"
         android:layout_height="wrap_content"
-        android:text="Latitude : "
+        android:text="Latitude     : "
         android:textColor="@color/white"
         android:layout_below="@id/address"
         android:textSize="22sp"
@@ -118,13 +118,24 @@
         android:layout_height="wrap_content"
         android:text=""
         android:textColor="@color/white"
-        android:layout_below="@id/longitude"
+        android:layout_below="@id/clock"
 
         android:textSize="22sp"
         android:textStyle="bold"
         android:layout_marginStart="10dp"
         android:layout_marginTop="20dp"
         android:id="@+id/DAT"/>
+    <TextClock
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_below="@+id/longitude"
+        android:format12Hour="hh:mm:ss:aa"
+        android:textColor="@color/white"
+        android:textSize="20dp"
+        android:layout_marginStart="10dp"
+        android:textStyle="bold"
+        android:id="@+id/clock"/>
     <Spinner
         android:layout_width="260dp"
         android:background="@color/white"
