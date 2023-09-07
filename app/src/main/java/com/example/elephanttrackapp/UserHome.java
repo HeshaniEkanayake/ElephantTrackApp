@@ -8,9 +8,11 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
 public class UserHome extends AppCompatActivity {
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,6 +24,9 @@ public class UserHome extends AppCompatActivity {
         Toast.makeText(getApplicationContext(),"Welcome "+username,Toast.LENGTH_SHORT).show();
 
         CardView exit=findViewById(R.id.Logout);
+        CardView location=findViewById(R.id.Summary);
+        CardView eleDe=findViewById(R.id.ElephantDetails);
+
         exit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -31,6 +36,23 @@ public class UserHome extends AppCompatActivity {
                 startActivity(new Intent(UserHome.this,Login.class));
             }
         });
+
+        location.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(UserHome.this,LocationDetails.class));
+            }
+        });
+
+        eleDe.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                startActivity(new Intent(UserHome.this,ElephantDetails.class));
+            }
+        });
+
+
 
     }
 }

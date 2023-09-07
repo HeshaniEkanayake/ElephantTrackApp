@@ -55,9 +55,9 @@ public class FindLocation extends AppCompatActivity implements LocationListener 
 
 
     LocationManager locationManager;
-    private static final int GPS_TIME_INTERVAL = 1000 ; // get gps location
+    private static final int GPS_TIME_INTERVAL = 1000*2 ; // get gps location
     private static final int GPS_DISTANCE = 1000;
-    private static final int HANDLER_DELAY = 1000*60*10; //display the result
+    private static final int HANDLER_DELAY = 1000*60*2; //display the result
     private static final int START_HANDLER_DELAY = 0;
 
 

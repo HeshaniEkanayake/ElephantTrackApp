@@ -138,9 +138,9 @@
         android:id="@+id/clock"/>
     <Spinner
         android:layout_width="260dp"
-        android:background="@color/white"
         android:layout_height="30dp"
         android:id="@+id/spinner"
+        android:background="@color/white"
         android:layout_toRightOf="@id/Select"
         android:layout_marginTop="50dp"
         android:layout_marginStart="10dp"
